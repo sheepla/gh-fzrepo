@@ -1,0 +1,37 @@
+#!/bin/bash
+
+readonly API_BASE="https://api.github.com"
+readonly BASE="https://github.com"
+
+
+function _encode() {
+    echo -n "${*}" | od -tx1 -An | tr ' ' % | tr -d \\n
+}
+
+function _get_repos() {
+    local query
+    query="$(_encode "${*}")"
+
+    curl \
+        --silent \
+        --header "Accept: application/vnd.github.v3+json" \
+        "${API_BASE}/search/repositories?q=${query}" \
+        | jq -r ".items[].full_name"
+}
+
+function _select() {
+    fzf < /dev/stdin \
+        --multi \
+        --preview "w3m -dump -T text/html ${BASE}/{}"
+}
+
+function _open() {
+    xargs -I@ -- xdg-open "${BASE}/@" &>/dev/null
+}
+
+function _main() {
+    _get_repos "${*}" | _select | _open w
+}
+
+_main "${@}"
+exit "${?}"
