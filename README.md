@@ -1,4 +1,9 @@
-# gh-fzrepo
+# 🚀 gh-fzrepo
+
+<div align="right">
+    <img src="https://img.shields.io/static/v1?label=Language&message=Shell&color=blue&style=flat-square"/>
+    <img src="https://img.shields.io/static/v1?label=License&message=MIT&color=blue&style=flat-square"/>
+</div>
 
 An extension for [GitHub CLI](https://github.com/cli/cli) to browse repositories with fzf
 
