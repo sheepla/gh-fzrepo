@@ -10,13 +10,23 @@ An extension for [GitHub CLI](https://github.com/cli/cli) to browse repositories
 ## Usage
 
 ```
-gh-fzrepo -- An extension for GitHub CLI to browse repositories with fzf
+gh fzrepo -- An extension for GitHub CLI to browse repositories with fzf
 
 USAGE
     gh-fzrepo KEYWORDS...
     gh-fzrepo -h|--help
     gh-fzrepo -V|--version
 ```
+
+### Keybindings
+
+| key | function |
+|-----|----------|
+| `Ctrl+J`, `Ctrl+K` | move focus |
+| `Ctrl+N`, `Ctrl+P` | move focus |
+| `Ctrl+R` | view README with `gh repo view` |
+| `Tab` | select/deselect repositories |
+| `Enter` | confirm selection and open in default browser | 
 
 ## Installation
 
