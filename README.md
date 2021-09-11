@@ -7,6 +7,12 @@
 
 An extension for [GitHub CLI](https://github.com/cli/cli) to browse repositories with fzf
 
+## Demo on asciinema.org
+
+> [https://asciinema.org/a/435075](https://asciinema.org/a/435075)
+
+[![asciicast](https://asciinema.org/a/435075.svg)](https://asciinema.org/a/435075)
+
 ## Features
 
 - [x] Quickly browse the README of each repository
