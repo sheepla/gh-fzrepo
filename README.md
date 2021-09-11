@@ -27,8 +27,8 @@ USAGE
 
 | key | function |
 |-----|----------|
-| `Ctrl+J`, `Ctrl+K` | move focus |
-| `Ctrl+N`, `Ctrl+P` | move focus |
+| `Ctrl+J`, `Ctrl+N` | move focus down |
+| `Ctrl+K`, `Ctrl+P` | move focus up |
 | `Ctrl+R` | view README with `gh repo view` |
 | `Tab` | select/deselect repositories |
 | `Enter` | confirm selection and open in default browser | 
