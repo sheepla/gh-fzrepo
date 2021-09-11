@@ -1,36 +1,84 @@
 #!/bin/bash
 
+readonly THIS_CMD="${0##*/}"
+
 readonly API_BASE="https://api.github.com"
 readonly BASE="https://github.com"
+readonly RAW_BASE="https://raw.githubusercontent.com"
 
+function _version() {
+	readonly VERSION="0.0.1"
+	readonly LICENSE="MIT"
+	readonly AUTHOR="sheepla"
 
-function _encode() {
-    echo -n "${*}" | od -tx1 -An | tr ' ' % | tr -d \\n
+	cat <<EOS
+${THIS_CMD} v${VERSION}
+released under the ${LICENSE} license.
+    Author: ${AUTHOR} (${BASE}/sheepla)
+EOS
+
 }
 
-function _get_repos() {
-    local query
-    query="$(_encode "${*}")"
+function _help() {
+	cat <<EOS
+${THIS_CMD} -- GitHub repository opener with fzf
 
-    curl \
-        --silent \
-        --header "Accept: application/vnd.github.v3+json" \
-        "${API_BASE}/search/repositories?q=${query}" \
-        | jq -r ".items[].full_name"
-}
-
-function _select() {
-    fzf < /dev/stdin \
-        --multi \
-        --preview "w3m -dump -T text/html ${BASE}/{}"
-}
-
-function _open() {
-    xargs -I@ -- xdg-open "${BASE}/@" &>/dev/null
+USAGE
+    ${THIS_CMD} KEYWORDS...
+    ${THIS_CMD} -h|--help|-V|--version
+EOS
 }
 
 function _main() {
-    _get_repos "${*}" | _select | _open w
+
+	if [[ "${#}" -le 0 ]]; then
+		_help
+		_err "Must require arguments..."
+		return 1
+	fi
+
+	for arg in "${@}"; do
+		case "${arg}" in
+		-h | --help)
+			_help
+			return 0
+			;;
+		-V | --version)
+			_version
+			return 0
+			;;
+		esac
+	done
+
+	_get_repos "${*}" | _select | _open
+}
+
+function _err() {
+	printf "[\e[31m ERR \e[m] %s\n" "${*}"
+}
+
+function _encode() {
+	echo -n "${*}" | od -tx1 -An | tr ' ' % | tr -d \\n
+}
+
+function _get_repos() {
+	local query
+	query="$(_encode "${*}")"
+
+	curl \
+		--silent \
+		--header "Accept: application/vnd.github.v3+json" \
+		"${API_BASE}/search/repositories?q=${query}" | jq -r ".items[].full_name"
+}
+
+function _select() {
+	fzf </dev/stdin \
+		--multi \
+		--preview "glow ${BASE}/{}"
+}
+
+function _open() {
+	xargs -I@ -- xdg-open "${BASE}/@" &>/dev/null
 }
 
 _main "${@}"
