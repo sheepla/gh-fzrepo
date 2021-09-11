@@ -31,14 +31,20 @@ USAGE
 | `Ctrl+K`, `Ctrl+P` | move focus up |
 | `Enter` | view README with `gh repo view` |
 | `Ctrl+O` | open URL of the repository in your default browser | 
+| `Esc`, `q` | quit fzf | 
 
 ## Installation
 
 Dependences:
 
 - [GitHub CLI](https://github.com/cli/cli) v2.0.0+
-- [fzf](https://github.com/junegunn/fzf)
+- [junegunn/fzf](https://github.com/junegunn/fzf)
 
 ```bash
 gh extension install sheepla/gh-fzopen
 ```
+
+## Contribution
+
+Welcome!
+
