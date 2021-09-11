@@ -1,6 +1,6 @@
 #!/bin/bash
 
-readonly THIS_CMD="${0##*/}"
+#readonly THIS_CMD="${0##*/}"
 readonly VERSION="0.0.1"
 readonly LICENSE="MIT"
 readonly GITHUB_URL="https://github.com"
@@ -20,12 +20,12 @@ EOS
 
 function _help() {
 	cat <<EOS
-${THIS_CMD} -- GitHub repository browser with fzf
+gh fzrepo -- GitHub repository browser with fzf
 
 USAGE
-    ${THIS_CMD} KEYWORDS...
-    ${THIS_CMD} -h|--help
-    ${THIS_CMD} -V|--version
+    gh fzrepo KEYWORDS...
+    gh fzrepo -h|--help
+    gh fzrepo -V|--version
 EOS
 }
 

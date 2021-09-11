@@ -24,9 +24,9 @@ An extension for [GitHub CLI](https://github.com/cli/cli) to browse repositories
 gh fzrepo -- An extension for GitHub CLI to browse repositories with fzf
 
 USAGE
-    gh-fzrepo KEYWORDS...
-    gh-fzrepo -h|--help
-    gh-fzrepo -V|--version
+    gh fzrepo KEYWORDS...
+    gh fzrepo -h|--help
+    gh fzrepo -V|--version
 ```
 
 ### Keybindings
