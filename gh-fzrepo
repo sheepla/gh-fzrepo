@@ -3,13 +3,18 @@
 readonly THIS_CMD="${0##*/}"
 readonly VERSION="0.0.1"
 readonly LICENSE="MIT"
+readonly GITHUB_URL="https://github.com"
 readonly AUTHOR="sheepla"
+
+readonly KEYBINDINGS="\
+Ctrl+R   view README
+Enter    open the repository in your default browser"
 
 function _version() {
 	cat <<EOS
 ${THIS_CMD} v${VERSION}
 released under the ${LICENSE} license.
-    Author: ${AUTHOR} (${BASE}/sheepla)
+    Author: ${AUTHOR} (${GITHUB_URL}/${AUTHOR})
 EOS
 }
 
@@ -62,21 +67,15 @@ function _search_repo() {
 
 	gh api \
 		--header "Accept: application/vnd.github.v3+json" \
-		"search/repositories?q=${query}" |
-		jq -r ".items[].full_name"
+		"search/repositories?q=${query}" --jq ".items[].full_name"
 }
 
 function _fzf() {
-    readonly HEADER_MSG="\
-Press Ctrl+R to view README
-Press Enter to open the repository in your default browser"
-
 	fzf </dev/stdin \
 		--multi \
-        --header-lines=1 \
-        --header "${HEADER_MSG}" \
+        --header-lines=2 \
+        --header "${KEYBINDINGS}" \
 		--preview "gh repo view {}" \
-		--bind "enter:execute(gh repo view -w {})" \
 		--bind "ctrl-r:execute(gh repo view {})"
 }
 
