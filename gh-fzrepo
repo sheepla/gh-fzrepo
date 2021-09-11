@@ -21,11 +21,12 @@ EOS
 
 function _help() {
 	cat <<EOS
-${THIS_CMD} -- GitHub repository opener with fzf
+${THIS_CMD} -- GitHub repository browser with fzf
 
 USAGE
     ${THIS_CMD} KEYWORDS...
-    ${THIS_CMD} -h|--help|-V|--version
+    ${THIS_CMD} -h|--help
+    ${THIS_CMD} -V|--version
 EOS
 }
 
@@ -50,7 +51,7 @@ function _main() {
 		esac
 	done
 
-	_get_repos "${*}" | _select | _open
+	_search_repo "${*}" | _fzf
 }
 
 function _err() {
@@ -61,24 +62,29 @@ function _encode() {
 	echo -n "${*}" | od -tx1 -An | tr ' ' % | tr -d \\n
 }
 
-function _get_repos() {
+function _search_repo() {
 	local query
 	query="$(_encode "${*}")"
 
-	curl \
-		--silent \
+	gh api \
 		--header "Accept: application/vnd.github.v3+json" \
-		"${API_BASE}/search/repositories?q=${query}" | jq -r ".items[].full_name"
+		"search/repositories?q=${query}" |
+		jq -r ".items[].full_name"
 }
 
-function _select() {
+function _fzf() {
+    readonly HEADER_MSG="
+Press Ctrl+R to view README
+Press Enter to open in your default browser
+"
+
 	fzf </dev/stdin \
 		--multi \
-		--preview "glow ${BASE}/{}"
-}
-
-function _open() {
-	xargs -I@ -- xdg-open "${BASE}/@" &>/dev/null
+        --header-lines=1 \
+        --header "${HEADER_MSG}" \
+		--preview "gh repo view {}" \
+		--bind "enter:execute(gh repo view -w {})" \
+		--bind "ctrl-r:execute(gh repo view {})"
 }
 
 _main "${@}"
