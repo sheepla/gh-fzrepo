@@ -7,8 +7,8 @@ readonly GITHUB_URL="https://github.com"
 readonly AUTHOR="sheepla"
 
 readonly KEYBINDINGS="\
-Ctrl+R   view README
-Enter    open with browser"
+Ctrl+O   open with browser
+Enter    view README"
 
 function _version() {
 	cat <<EOS
@@ -67,7 +67,8 @@ function _search_repo() {
 
 	gh api \
 		--header "Accept: application/vnd.github.v3+json" \
-		"search/repositories?q=${query}" --jq ".items[].full_name"
+		--jq ".items[].full_name" \
+		"search/repositories?q=${query}"
 }
 
 function _fzf() {
@@ -75,7 +76,8 @@ function _fzf() {
 		--multi \
 		--header "${KEYBINDINGS}" \
 		--preview "gh repo view {}" \
-		--bind "ctrl-r:execute(gh repo view {})"
+		--bind "enter:execute(gh repo view {})" \
+		--bind "ctrl-o:execute(gh repo view {} -w)"
 }
 
 _main "${@}"

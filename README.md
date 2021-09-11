@@ -29,9 +29,8 @@ USAGE
 |-----|----------|
 | `Ctrl+J`, `Ctrl+N` | move focus down |
 | `Ctrl+K`, `Ctrl+P` | move focus up |
-| `Ctrl+R` | view README with `gh repo view` |
-| `Tab` | select/deselect repositories |
-| `Enter` | confirm selection and open in default browser | 
+| `Enter` | view README with `gh repo view` |
+| `Ctrl+O` | open URL of the repository in your default browser | 
 
 ## Installation
 
