@@ -7,6 +7,11 @@
 
 An extension for [GitHub CLI](https://github.com/cli/cli) to browse repositories with fzf
 
+## Features
+
+- [x] Quickly browse the README of each repository
+- [x] Open URL of the repository in your default browser immediately
+
 ## Usage
 
 ```
