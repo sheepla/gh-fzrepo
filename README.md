@@ -50,6 +50,12 @@ Dependences:
 gh extension install sheepla/gh-fzopen
 ```
 
+## One Liner Edition
+
+```bash
+query="..."; gh api "search/repositories?q=${query}" --jq ".items[].full_name" | fzf --preview "gh repo view {}" --bind "enter:execute(gh repo view {})" --bind "ctrl-o:execute(gh repo view -w {})"
+```
+
 ## Contribution
 
 Welcome!
