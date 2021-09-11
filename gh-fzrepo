@@ -1,22 +1,16 @@
 #!/bin/bash
 
 readonly THIS_CMD="${0##*/}"
-
-readonly API_BASE="https://api.github.com"
-readonly BASE="https://github.com"
-readonly RAW_BASE="https://raw.githubusercontent.com"
+readonly VERSION="0.0.1"
+readonly LICENSE="MIT"
+readonly AUTHOR="sheepla"
 
 function _version() {
-	readonly VERSION="0.0.1"
-	readonly LICENSE="MIT"
-	readonly AUTHOR="sheepla"
-
 	cat <<EOS
 ${THIS_CMD} v${VERSION}
 released under the ${LICENSE} license.
     Author: ${AUTHOR} (${BASE}/sheepla)
 EOS
-
 }
 
 function _help() {
@@ -73,10 +67,9 @@ function _search_repo() {
 }
 
 function _fzf() {
-    readonly HEADER_MSG="
+    readonly HEADER_MSG="\
 Press Ctrl+R to view README
-Press Enter to open in your default browser
-"
+Press Enter to open the repository in your default browser"
 
 	fzf </dev/stdin \
 		--multi \
