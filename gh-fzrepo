@@ -73,8 +73,8 @@ function _search_repo() {
 function _fzf() {
 	fzf </dev/stdin \
 		--multi \
-        --header-lines=2 \
-        --header "${KEYBINDINGS}" \
+		--header-lines=2 \
+		--header "${KEYBINDINGS}" \
 		--preview "gh repo view {}" \
 		--bind "ctrl-r:execute(gh repo view {})"
 }
