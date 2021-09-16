@@ -47,7 +47,7 @@ Dependences:
 - [junegunn/fzf](https://github.com/junegunn/fzf)
 
 ```bash
-gh extension install sheepla/gh-fzopen
+gh extension install sheepla/gh-fzrepo
 ```
 
 ## One Liner Edition
