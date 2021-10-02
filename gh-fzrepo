@@ -77,7 +77,7 @@ function _fzf() {
 		--header "${KEYBINDINGS}" \
 		--preview "gh repo view {}" \
 		--bind "enter:execute(gh repo view {})" \
-		--bind "ctrl-o:execute(gh repo view {} -w)"
+		--bind "ctrl-o:execute(gh repo view {} -w &>/dev/null &)"
 }
 
 _main "${@}"
