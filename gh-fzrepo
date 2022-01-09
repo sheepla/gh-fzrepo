@@ -78,13 +78,14 @@ function _fzf() {
 	fzf </dev/stdin \
 		--multi \
 		--cycle \
+		--keep-right \
 		--header "${KEYBINDINGS}" \
 		--header-first \
 		--preview "gh repo view {}" \
 		--bind "enter:execute(gh repo view {} & read && clear)" \
 		--bind "ctrl-d:execute(gh repo clone {})" \
 		--bind "ctrl-o:execute(gh repo view {} -w &>/dev/null &)" \
-		--bind "ctrl-n:change-preview-window(right,80%|up,80%,border-horizontal|hidden|right)" \
+		--bind "ctrl-n:change-preview-window(right,80%|up,65%,border-horizontal|hidden|right)" \
 		--bind "esc:accept-non-empty"
 }
 
