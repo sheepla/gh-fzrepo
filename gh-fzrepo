@@ -1,14 +1,17 @@
 #!/bin/bash
 
 #readonly THIS_CMD="${0##*/}"
-readonly VERSION="0.0.1"
+readonly VERSION="0.1.0"
 readonly LICENSE="MIT"
 readonly GITHUB_URL="https://github.com"
-readonly AUTHOR="sheepla"
+readonly AUTHOR="sheepla,ConnerWill"
 
 readonly KEYBINDINGS="\
-Ctrl+O   open with browser
-Enter    view README"
+Enter        View README
+Ctrl+D       Clone repository
+Ctrl+O       Open repository in browser
+Ctrl+N       Change layout
+Esc          Exit"
 
 function _version() {
 	cat <<EOS
@@ -74,11 +77,18 @@ function _search_repo() {
 function _fzf() {
 	fzf </dev/stdin \
 		--multi \
+		--cycle \
 		--header "${KEYBINDINGS}" \
+		--header-first \
 		--preview "gh repo view {}" \
-		--bind "enter:execute(gh repo view {})" \
-		--bind "ctrl-o:execute(gh repo view {} -w &>/dev/null &)"
+		--bind "enter:execute(gh repo view {} & read && clear)" \
+		--bind "ctrl-d:execute(gh repo clone {})" \
+		--bind "ctrl-o:execute(gh repo view {} -w &>/dev/null &)" \
+		--bind "ctrl-n:change-preview-window(right,80%|up,80%,border-horizontal|hidden|right)" \
+		--bind "esc:accept-non-empty"
 }
+
+
 
 _main "${@}"
 exit "${?}"

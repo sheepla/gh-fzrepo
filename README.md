@@ -5,7 +5,7 @@
     <img src="https://img.shields.io/static/v1?label=License&message=MIT&color=blue&style=flat-square"/>
 </div>
 
-An extension for [GitHub CLI](https://github.com/cli/cli) to browse repositories with fzf
+An extension for [GitHub CLI](https://github.com/cli/cli) to browse and clone repositories with fzf
 
 ## Demo on asciinema.org
 
@@ -16,6 +16,7 @@ An extension for [GitHub CLI](https://github.com/cli/cli) to browse repositories
 ## Features
 
 - [x] Quickly browse the README of each repository
+- [x] Easily clone repositories from fzf
 - [x] Open URL of the repository in your default browser immediately
 
 ## Usage
@@ -33,27 +34,28 @@ USAGE
 
 | key | function |
 |-----|----------|
-| `Ctrl+J`, `Ctrl+N` | move focus down |
-| `Ctrl+K`, `Ctrl+P` | move focus up |
-| `Enter` | view README with `gh repo view` |
-| `Ctrl+O` | open URL of the repository in your default browser | 
-| `Esc`, `q` | quit fzf | 
+| `Ctrl+J`, `Ctrl+N` | Move focus down |
+| `Ctrl+K`, `Ctrl+P` | Move focus up |
+| `Enter` | View README with `gh repo view` |
+| `Ctrl+D` | Clone repository `gh repo clone` |
+| `Ctrl+O` | Open URL of the repository in your default browser |
+| `Esc` | Exit fzf |
 
 ## Installation
 
-Dependences:
+**Dependences:**
 
-- [GitHub CLI](https://github.com/cli/cli) v2.0.0+
+- [GitHub CLI](https://github.com/cli/cli) *v2.0.0+*
 - [junegunn/fzf](https://github.com/junegunn/fzf)
 
 ```bash
-gh extension install sheepla/gh-fzrepo
+gh extension install ConnerWill/gh-fzrepo
 ```
 
 ## One Liner Edition
 
 ```bash
-query="..."; gh api "search/repositories?q=${query}" --jq ".items[].full_name" | fzf --preview "gh repo view {}" --bind "enter:execute(gh repo view {})" --bind "ctrl-o:execute(gh repo view -w {})"
+query="..."; gh api "search/repositories?q=${query}" --jq ".items[].full_name" | fzf </dev/stdin	--multi	--cycle	--header "${KEYBINDINGS}" --header-first --preview "gh repo view {}" --bind "enter:execute(gh repo view {} & read && clear)" --bind "ctrl-d:execute(gh repo clone {})" --bind "ctrl-o:execute(gh repo view {} -w &>/dev/null &)" --bind "ctrl-n:change-preview-window(right,80%|up,80%,border-horizontal|hidden|right)" --bind "esc:accept-non-empty"
 ```
 
 ## Contribution
