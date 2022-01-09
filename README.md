@@ -2,7 +2,7 @@
 
 <img width="400" height="400" src="https://asciinema.org/a/435075.svg">
 
-# ^=^z^` gh-fzrepo
+# rocket gh-fzrepo
 
 ### **Browse and clone repositories with fzf**
 > An extension for [GitHub CLI](https://github.com/cli/cli) to browse and clone repositories with fzf.
