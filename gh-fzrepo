@@ -64,15 +64,31 @@ function _encode() {
 	echo -n "${*}" | od -tx1 -An | tr ' ' % | tr -d \\n
 }
 
-function _search_repo() {
-	local query
-	query="$(_encode "${*}")"
+gh_sort_order="desc"
+gh_page_number=1
+gh_sort_by="stars"
+gh_search_lang=""
 
-	gh api \
-		--header "Accept: application/vnd.github.v3+json" \
-		--jq ".items[].full_name" \
-		"search/repositories?q=${query}"
+function _search_repo() {
+    local query
+    query="$(_encode "${*}")"
+
+    gh api \
+        --header "Accept: application/vnd.github.v3+json" \
+        --jq ".items[].full_name" \
+        "search/repositories?q=${query}&s=${gh_sort_by}&o=${gh_sort_order}&l=${gh_search_lang}&p=${gh_page_number}"
 }
+
+#function _search_repo() {
+#    local query
+#    query="$(_encode "${*}")"
+#
+#    gh api \
+#        --header "Accept: application/vnd.github.v3+json" \
+#        --jq ".items[].full_name" \
+#        "search/repositories?q=${query}&s=stars&o=desc"
+#}
+
 
 function _fzf() {
 	fzf </dev/stdin \
