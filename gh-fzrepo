@@ -1,5 +1,18 @@
 #!/bin/bash
 
+gh_sort_order="desc"
+gh_sort_by="stars"
+gh_search_lang=""
+
+# For now, you can define a environment variable "gh_page_number" as the page number to view.
+#   
+#   export gh_page_number=3
+#
+# If undefined, page 1 will be used.
+[[ -z "$gh_page_number" ]] && gh_page_number=1
+
+
+
 #readonly THIS_CMD="${0##*/}"
 readonly VERSION="0.1.0"
 readonly LICENSE="MIT"
@@ -7,11 +20,11 @@ readonly GITHUB_URL="https://github.com"
 readonly AUTHOR="sheepla,ConnerWill"
 
 readonly KEYBINDINGS="\
-Enter        View README
-Ctrl+D       Clone repository
-Ctrl+O       Open repository in browser
-Ctrl+N       Change layout
-Esc          Exit"
+    Enter        View README
+    Ctrl+D       Clone repository
+    Ctrl+O       Open repository in browser
+    Ctrl+N       Change layout
+    Esc          Exit"
 
 function _version() {
 	cat <<EOS
@@ -29,8 +42,16 @@ USAGE
     gh fzrepo KEYWORDS...
     gh fzrepo -h|--help
     gh fzrepo -V|--version
+
+KEYBINDINGS
+$KEYBINDINGS
 EOS
 }
+
+function _err() {
+	printf "[\e[31m ERR \e[m] %s\n" "${*}"
+}
+
 
 function _main() {
 
@@ -56,18 +77,10 @@ function _main() {
 	_search_repo "${*}" | _fzf
 }
 
-function _err() {
-	printf "[\e[31m ERR \e[m] %s\n" "${*}"
-}
 
 function _encode() {
 	echo -n "${*}" | od -tx1 -An | tr ' ' % | tr -d \\n
 }
-
-gh_sort_order="desc"
-gh_page_number=1
-gh_sort_by="stars"
-gh_search_lang=""
 
 function _search_repo() {
     local query
@@ -79,33 +92,78 @@ function _search_repo() {
         "search/repositories?q=${query}&s=${gh_sort_by}&o=${gh_sort_order}&l=${gh_search_lang}&p=${gh_page_number}"
 }
 
-#function _search_repo() {
-#    local query
-#    query="$(_encode "${*}")"
+### TODO: 
+##
+##      Add Next/Previous page function  
+###
+#        --bind "ctrl-n:reload(_next_page)"  \
+#        --bind "ctrl-p:reload(_previous_page)
 #
-#    gh api \
-#        --header "Accept: application/vnd.github.v3+json" \
-#        --jq ".items[].full_name" \
-#        "search/repositories?q=${query}&s=stars&o=desc"
-#}
+#   gh_page_number_max=3
+#
+#    function _next_page(){
+#        [[ "$gh_page_number" -lt "$gh_page_number_max" ]] && gh_page_number=$((gh_page_number-1))
+#        _main "$query"
+#        return
+#    }
+#
+#    function _previous_page(){
+#        [[ "$gh_page_number" -gt 1 ]] && gh_page_number=$((gh_page_number-1)) 
+#        _main "$query"
+#        return
+#    }
+###
 
 
 function _fzf() {
 	fzf </dev/stdin \
 		--multi \
-		--cycle \
 		--keep-right \
 		--header "${KEYBINDINGS}" \
 		--header-first \
+        --header-lines=5 \
 		--preview "gh repo view {}" \
-		--bind "enter:execute(gh repo view {} & read && clear)" \
-		--bind "ctrl-d:execute(gh repo clone {})" \
-		--bind "ctrl-o:execute(gh repo view {} -w &>/dev/null &)" \
-		--bind "ctrl-n:change-preview-window(right,80%|up,65%,border-horizontal|hidden|right)" \
+        --preview-window "right:70%" \
+        --margin 1% \
+        --padding 1% \
+        --border \
+        --info=inline \
+        --prompt="> " \
+        --pointer="[>" \
+        --marker="✔ " \
+        --tabstop=4 \
+        --no-mouse \
+        --scroll-off=25  \
+        --hscroll-off=100  \
+        --ansi  \
+        --color='bg:#1A1A1A,bg+:#333333,info:#999999,border:#999999,spinner:#F5F5F5'  \
+        --color='hl+:#BD2C00,hl:#4078C0,fg:#C1C1C1,fg+:#FFFFFF,header:#666666,preview-bg:#333333'  \
+        --color='header:#666666,query:#4183c4,pointer:#BD2C00,marker:#6CC644,prompt:#F5F5F5' \
+        --color='gutter:#141414' \
+        --bind 'pgdn:preview-page-down'  \
+        --bind 'pgup:preview-page-up'  \
+        --bind 'shift-up:preview-top'  \
+        --bind 'shift-down:preview-bottom'  \
+        --bind 'home:last'  \
+        --bind 'end:first'  \
+        --bind 'ctrl-y:yank'  \
+        --bind 'backward-eof:change-preview-window(hidden)'  \
+        --bind 'ctrl-l:clear-query'  \
+        --bind 'tab:select'  \
+        --bind 'ctrl-v:toggle-preview'  \
+        --bind 'ctrl-/:change-preview-window(up,border-horizontal|up,40%,border-horizontal|left|left,border-left,40%|down|down,40%,border-horizontal|down,10%,border-horizontal|hidden|right,40%|right,70%|right,90%)' \
+        --bind 'ctrl-space:select'  \
+        --bind 'ctrl-a:select-all'  \
+        --bind 'ctrl-d:deselect-all'  \
+        --bind "?:preview: echo $KEYBINDINGS | cat"  \
+        --bind "ctrl-h:preview: echo $KEYBINDINGS | cat"  \
+		--bind "enter:execute(gh repo view {} & read && clear)"  \
+		--bind "ctrl-d:execute(gh repo clone {})"  \
+		--bind "ctrl-o:execute(gh repo view {} -w &>/dev/null &)"  \
 		--bind "esc:accept-non-empty"
 }
 
 
-
+#h1+:#6CC644
 _main "${@}"
 exit "${?}"
