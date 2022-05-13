@@ -1,62 +1,87 @@
-# 🚀 gh-fzrepo
+<div align="center">
 
-<div align="right">
-    <img src="https://img.shields.io/static/v1?label=Language&message=Shell&color=blue&style=flat-square"/>
-    <img src="https://img.shields.io/static/v1?label=License&message=MIT&color=blue&style=flat-square"/>
+<img width="400" height="400" src="https://asciinema.org/a/435075.svg">
+
+# gh-fzrepo
+
+### **Browse and clone repositories with fzf**
+> An extension for [GitHub CLI](https://github.com/cli/cli) to browse and clone repositories with fzf.
+
+![GitHub last commit](https://img.shields.io/github/last-commit/ConnerWill/gh-fzrepo)
+![GitHub issues](https://img.shields.io/github/issues-raw/ConnerWill/gh-fzrepo)
+![GitHub repo size](https://img.shields.io/github/repo-size/ConnerWill/gh-fzrepo)
+[![GitLab](https://img.shields.io/static/v1?label=gitlab&logo=gitlab&color=E24329&message=mirrored)](https://gitlab.com/ConnerWill/gh-fzrepo)
+![GitHub](https://img.shields.io/github/license/ConnerWill/gh-fzrepo)
+![GitHub Repo stars](https://img.shields.io/github/stars/ConnerWill/gh-fzrepo?style=social)
+
+---
 </div>
 
-An extension for [GitHub CLI](https://github.com/cli/cli) to browse repositories with fzf
 
-## Demo on asciinema.org
-
-> [https://asciinema.org/a/435075](https://asciinema.org/a/435075)
-
-[![asciicast](https://asciinema.org/a/435075.svg)](https://asciinema.org/a/435075)
-
-## Features
+# Features
 
 - [x] Quickly browse the README of each repository
+- [x] Easily clone repositories from fzf
 - [x] Open URL of the repository in your default browser immediately
 
-## Usage
+---
 
+# Table of Contents
+
+<details>
+  <summary>Table of Contents</summary>
+
+* [gh-fzrepo](#z-gh-fzrepo)
+* [Features](#features)
+* [Table of Contents](#table-of-contents)
+* [Usage](#usage)
+   * [Keybindings](#keybindings)
+   * [Installation](#installation)
+   * [One Liner Edition](#one-liner-edition)
+* [Contribution](#contribution)
+
+</details>
+
+# Usage
+
+```bash
+gh fzrepo <SEARCH>
+gh fzrepo -h|--help
+gh fzrepo -V|--version
 ```
-gh fzrepo -- An extension for GitHub CLI to browse repositories with fzf
 
-USAGE
-    gh fzrepo KEYWORDS...
-    gh fzrepo -h|--help
-    gh fzrepo -V|--version
-```
-
-### Keybindings
+## Keybindings
 
 | key | function |
 |-----|----------|
-| `Ctrl+J`, `Ctrl+N` | move focus down |
-| `Ctrl+K`, `Ctrl+P` | move focus up |
-| `Enter` | view README with `gh repo view` |
-| `Ctrl+O` | open URL of the repository in your default browser | 
-| `Esc`, `q` | quit fzf | 
+| `Ctrl+J`, `Ctrl+N` | Move focus down |
+| `Ctrl+K`, `Ctrl+P` | Move focus up |
+| `Enter` | View README with `gh repo view` |
+| `Ctrl+D` | Clone repository `gh repo clone` |
+| `Ctrl+O` | Open URL of the repository in your default browser |
+| `Esc` | Exit fzf |
 
 ## Installation
 
-Dependences:
+**Dependences:**
 
-- [GitHub CLI](https://github.com/cli/cli) v2.0.0+
+- [GitHub CLI](https://github.com/cli/cli) *v2.0.0+*
 - [junegunn/fzf](https://github.com/junegunn/fzf)
 
 ```bash
-gh extension install sheepla/gh-fzrepo
+gh extension install ConnerWill/gh-fzrepo
 ```
+
+---
 
 ## One Liner Edition
 
 ```bash
-query="..."; gh api "search/repositories?q=${query}" --jq ".items[].full_name" | fzf --preview "gh repo view {}" --bind "enter:execute(gh repo view {})" --bind "ctrl-o:execute(gh repo view -w {})"
+query="..."; gh api "search/repositories?q=${query}" --jq ".items[].full_name" | fzf </dev/stdin    --mu>
 ```
 
-## Contribution
+# Contribution
 
 Welcome!
 
+---
